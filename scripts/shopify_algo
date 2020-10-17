@@ -1,0 +1,19 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © DR_MARTENS
+
+
+// This algorithm will show if you should buy or sell th enext day
+// ment for day trading at open opnly
+
+//@version=4
+study("Shopify trading algorithm", overlay=true)
+lastClose = security(syminfo.tickerid, "D", close[1], lookahead = barmerge.lookahead_on)
+lastOpen = security(syminfo.tickerid, "D", open[1], lookahead = barmerge.lookahead_on)
+day_spread = lastOpen-lastClose
+num_shares = 5
+was_red = day_spread<0
+
+security = (((open-lastOpen) * num_shares)-20)>0
+buy = (was_red and security)
+plotshape(buy, color=color.green, style=shape.arrowup, text="Buy")
+plotshape(not buy, color=color.red, style=shape.arrowdown, text="Sell")
